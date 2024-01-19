@@ -49,14 +49,14 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         paddingTop: 2,
         paddingBottom: 8,
-        margin: 10,
+        margin: 7,
         elevation: 10,
         borderRadius: 20,
     },
     leftView:{
         flexDirection:'row',
         alignItems:'center',
-        gap:8
+        gap:5
     },
     taskDetails: {
         width: '70%'

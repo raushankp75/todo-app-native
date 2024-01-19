@@ -1,10 +1,11 @@
 import { View, Text, SafeAreaView, Platform, StatusBar, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 
 // import components
 import { Task } from '../components'
 
 import Icon from 'react-native-vector-icons/Entypo'
+import { Dialog, Button, TextInput } from 'react-native-paper'
 
 // import {useNavigation} from '@react-navigation/native'
 
@@ -24,25 +25,90 @@ const Home = ({ navigation }) => {
             title: 'Task2',
             description: 'Description2',
             completed: false
+        },
+        {
+            _id: 3,
+            title: 'Task3',
+            description: 'Description3',
+            completed: false
+        },
+        {
+            _id: 4,
+            title: 'Task4',
+            description: 'Description4',
+            completed: false
+        },
+        {
+            _id: 5,
+            title: 'Task5',
+            description: 'Description5',
+            completed: false
+        },
+        {
+            _id: 6,
+            title: 'Task6',
+            description: 'Description6',
+            completed: false
         }
     ]
 
+
+    const [openDialog, setOpenDialog] = useState(false)
+    const [title, setTitle] = useState("")
+    const [description, setDescription] = useState("")
+
+    const toggleDialog = () => {
+        setOpenDialog(!openDialog)
+    }
+  
+    const addTask = () => {
+        console.log(`Title: ${title}, Description: ${description}`)
+
+        
+
+        setTitle("")
+        setDescription("")
+    }
+
+
+
     return (
-        <View style={styles.main}>
-            <SafeAreaView>
-                <Text style={styles.heading}>All Task</Text>
+        <>
+            <View style={styles.main}>
+                <SafeAreaView>
+                    <Text style={styles.heading}>All Task</Text>
 
-                <ScrollView>
-                    {tasks.map((task) => (
-                        <Task key={task._id} taskId={task._id} title={task.title} description={task.description} status={task.completed} />
-                    ))}
-                </ScrollView>
+                    <ScrollView>
+                        {tasks.map((task) => (
+                            <Task key={task._id} taskId={task._id} title={task.title} description={task.description} status={task.completed} />
+                        ))}
+                    </ScrollView>
 
-                <TouchableOpacity>
-                    <Icon name='add-to-list' size={32} color='#4682B4' style={styles.addIcon} />
-                </TouchableOpacity>
-            </SafeAreaView>
-        </View>
+                    <TouchableOpacity onPress={toggleDialog} style={styles.addIcon}>
+                        <Icon name='add-to-list' size={32} color='#4682B4' />
+                    </TouchableOpacity>
+                </SafeAreaView>
+            </View>
+
+            <Dialog visible={openDialog} onDismiss={toggleDialog}>
+                <Dialog.Title>New Task</Dialog.Title>
+
+                <Dialog.Content style={{ gap: 20 }}>
+                    <TextInput name='title' value={title} onChangeText={setTitle} style={styles.input} placeholder='Task Title' />
+                    <TextInput name='description' value={description} onChangeText={setDescription} style={styles.input} placeholder='Task Content' />
+
+                    <View style={styles.dialogFooter}>
+                        <TouchableOpacity onPress={toggleDialog}>
+                            <Text style={styles.dialogCancelIcon}>CANCEL</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={addTask} style={styles.dialogAddIcon}>
+                            <Icon name='check' size={32} color='#4682B4' />
+                        </TouchableOpacity>
+                    </View>
+                </Dialog.Content>
+            </Dialog>
+        </>
     )
 }
 
@@ -57,22 +123,46 @@ const styles = StyleSheet.create({
         paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
     },
     heading: {
-        backgroundColor: "#0F52BA",
+        backgroundColor: "#0047AB",
         elevation: 10,
-        padding: 15,
+        paddingTop: 15,
+        paddingBottom: 15,
+        paddingLeft: 22,
         color: '#fff',
-        fontSize: 25
+        fontSize: 22
     },
-    addIcon:{
-        backgroundColor:'#fff',
-        elevation:25,
-        width:'150',
-        height:'150',
-        justifyContent:'center',
-        alignContent:'center',
+    addIcon: {
+        backgroundColor: '#fff',
+        elevation: 25,
+        width: '150',
+        height: '150',
+        justifyContent: 'center',
+        alignContent: 'center',
         borderRadius: 100,
         alignSelf: 'flex-end',
-        padding:15,
-        marginRight:15
+        padding: 15,
+        marginRight: 15
+    },
+    dialogFooter: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    dialogAddIcon: {
+        backgroundColor: '#fff',
+        elevation: 1,
+        width: '150',
+        height: '150',
+        justifyContent: 'center',
+        alignContent: 'center',
+        borderRadius: 100,
+        padding: 15,
+    },
+    dialogCancelIcon: {
+        fontSize: 15,
+        backgroundColor: '#D3D3D3',
+        fontWeight: '600',
+        padding: 10,
+        borderRadius: 10
     }
 })
