@@ -1,11 +1,11 @@
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Registerbg from '../assets/registerbg.jpg'
 import { Avatar, Button } from 'react-native-paper'
 import LocalAvatar from '../assets/localAvatar.png'
 
 
-const Register = ({ navigation }) => {
+const Register = ({ navigation, route }) => {
 
   const [avatar, setAvatar] = useState("")
   const [name, setName] = useState("")
@@ -13,12 +13,25 @@ const Register = ({ navigation }) => {
   const [password, setPassword] = useState("")
 
   const handleImage = () => {
-    console.log('Image here')
+    // console.log('Image here')
+    navigation.navigate('mycamera')
   }
 
   const registerHandler = () => {
     console.log('user register')
   }
+
+
+  // get image from params after select image
+  useEffect(() => {
+    // console.log(route.params.image)
+
+    if(route.params) {
+      if(route.params.image){
+        setAvatar(route.params.image)
+      }
+    }
+  }, [route])
   
 
 
