@@ -7,11 +7,8 @@ import { Task } from '../components'
 import Icon from 'react-native-vector-icons/Entypo'
 import { Dialog, Button, TextInput } from 'react-native-paper'
 
-// import {useNavigation} from '@react-navigation/native'
 
-const Home = ({ navigation }) => {
-
-    // const navigation = useNavigation()
+const Home = () => {
 
     const tasks = [
         {
@@ -48,6 +45,30 @@ const Home = ({ navigation }) => {
             _id: 6,
             title: 'Task6',
             description: 'Description6',
+            completed: false
+        },
+        {
+            _id: 7,
+            title: 'Task7',
+            description: 'Description7',
+            completed: false
+        },
+        {
+            _id: 8,
+            title: 'Task8',
+            description: 'Description8',
+            completed: false
+        },
+        {
+            _id: 9,
+            title: 'Task9',
+            description: 'Description9',
+            completed: false
+        },
+        {
+            _id: 10,
+            title: 'Task10',
+            description: 'Description10',
             completed: false
         }
     ]
@@ -120,7 +141,8 @@ const styles = StyleSheet.create({
     main: {
         backgroundColor: '#4682B4',
         flex: 1,
-        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
+        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+        paddingBottom: 60
     },
     heading: {
         backgroundColor: "#0047AB",
@@ -133,7 +155,7 @@ const styles = StyleSheet.create({
     },
     addIcon: {
         backgroundColor: '#fff',
-        elevation: 25,
+        elevation: 20,
         width: '150',
         height: '150',
         justifyContent: 'center',
@@ -141,7 +163,11 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         alignSelf: 'flex-end',
         padding: 15,
-        marginRight: 15
+        marginRight: 15,
+
+        position: 'absolute',
+        bottom: 30,
+        right: 10
     },
     dialogFooter: {
         flexDirection: 'row',

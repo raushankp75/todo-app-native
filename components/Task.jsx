@@ -2,7 +2,7 @@ import { View, Text, StyleSheet } from 'react-native'
 import React, { useState } from 'react'
 
 import { Checkbox } from 'react-native-paper'
-import Icon from 'react-native-vector-icons/AntDesign'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 
 const Task = ({ taskId, title, description, status }) => {
@@ -29,7 +29,7 @@ const Task = ({ taskId, title, description, status }) => {
                 </View>
             </View>
 
-            <Icon onPress={handleDelete} name='delete' color='red' size={25} />
+            <Icon onPress={handleDelete} name='delete' color='#D22B2B' size={25} />
         </View>
     )
 }
