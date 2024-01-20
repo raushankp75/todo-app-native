@@ -1,7 +1,6 @@
-import { View, Text, StyleSheet, Platform, Image, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, Platform, Image, ScrollView, StatusBar } from 'react-native'
 import React from 'react'
 import { Button } from 'react-native-paper'
-import { StatusBar } from 'expo-status-bar'
 import WelcomeImg from '../assets/welcome.jpeg'
 
 
