@@ -1,17 +1,36 @@
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import Loginbg from '../assets/loginbg.png'
 import { Button } from 'react-native-paper'
 
+import { useDispatch, useSelector } from 'react-redux'
+import { login } from '../redux/auth/authAction'
+
 
 const Login = ({ navigation }) => {
+
+  // get user info
+  const { error } = useSelector(state => state.auth)
+
+  // redux
+  const dispatch = useDispatch()
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
   const loginHandler = () => {
-    console.log('User Login')
+    dispatch(login(email, password))
+    // console.log(`${email}, Success Login`)
   }
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert(error)
+      dispatch({ type: 'clearError' })
+    }
+  }, [error, dispatch, alert])
+
+
 
 
   return (

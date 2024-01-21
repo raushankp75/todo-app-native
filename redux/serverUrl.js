@@ -1,0 +1,1 @@
+export const serverUrl = 'https://my-todo-app-rk.onrender.com/api/v1'
