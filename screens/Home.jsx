@@ -1,78 +1,23 @@
-import { View, Text, SafeAreaView, Platform, StatusBar, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, SafeAreaView, Platform, StatusBar, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native'
+import React, { useEffect, useState } from 'react'
 
 // import components
 import { Task } from '../components'
 
 import Icon from 'react-native-vector-icons/Entypo'
 import { Dialog, Button, TextInput } from 'react-native-paper'
+import { useDispatch, useSelector } from 'react-redux'
+import { addTask, getAllTasks } from '../redux/task/taskAction'
 
 
 const Home = () => {
 
-    const tasks = [
-        {
-            _id: 1,
-            title: 'Task1',
-            description: 'Description1',
-            completed: true
-        },
-        {
-            _id: 2,
-            title: 'Task2',
-            description: 'Description2',
-            completed: false
-        },
-        {
-            _id: 3,
-            title: 'Task3',
-            description: 'Description3',
-            completed: false
-        },
-        {
-            _id: 4,
-            title: 'Task4',
-            description: 'Description4',
-            completed: false
-        },
-        {
-            _id: 5,
-            title: 'Task5',
-            description: 'Description5',
-            completed: false
-        },
-        {
-            _id: 6,
-            title: 'Task6',
-            description: 'Description6',
-            completed: false
-        },
-        {
-            _id: 7,
-            title: 'Task7',
-            description: 'Description7',
-            completed: false
-        },
-        {
-            _id: 8,
-            title: 'Task8',
-            description: 'Description8',
-            completed: false
-        },
-        {
-            _id: 9,
-            title: 'Task9',
-            description: 'Description9',
-            completed: false
-        },
-        {
-            _id: 10,
-            title: 'Task10',
-            description: 'Description10',
-            completed: false
-        }
-    ]
 
+    // redux
+    const {tasks} = useSelector(state=> state.tasks)
+
+    const dispatch = useDispatch()
+    const {loading, message, error} = useSelector(state=> state.taskMessage)
 
     const [openDialog, setOpenDialog] = useState(false)
     const [title, setTitle] = useState("")
@@ -82,14 +27,29 @@ const Home = () => {
         setOpenDialog(!openDialog)
     }
   
-    const addTask = () => {
-        console.log(`Title: ${title}, Description: ${description}`)
-
-        
+    const addTaskHandler = () => {
+        // console.log(`Title: ${title}, Description: ${description}`)
+        dispatch(addTask(title, description))
 
         setTitle("")
         setDescription("")
+        setOpenDialog(!openDialog)
     }
+
+    useEffect(() => {
+        dispatch(getAllTasks())
+    }, [title, description])
+
+    useEffect(() => {
+        if(message){
+            Alert.alert(message)
+            dispatch({type: 'clearMessage'})
+        }
+        if(error){
+            Alert.alert(error)
+            dispatch({type: 'clearError'})
+        }
+    }, [alert, message, error, dispatch])
 
 
 
@@ -100,7 +60,7 @@ const Home = () => {
                     <Text style={styles.heading}>All Task</Text>
 
                     <ScrollView>
-                        {tasks.map((task) => (
+                        {tasks && tasks.map((task) => (
                             <Task key={task._id} taskId={task._id} title={task.title} description={task.description} status={task.completed} />
                         ))}
                     </ScrollView>
@@ -123,7 +83,7 @@ const Home = () => {
                             <Text style={styles.dialogCancelIcon}>CANCEL</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={addTask} style={styles.dialogAddIcon}>
+                        <TouchableOpacity disabled={!title || !description || loading} onPress={addTaskHandler} style={styles.dialogAddIcon}>
                             <Icon name='check' size={32} color='#4682B4' />
                         </TouchableOpacity>
                     </View>

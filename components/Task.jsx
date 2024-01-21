@@ -1,20 +1,31 @@
 import { View, Text, StyleSheet } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Checkbox } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import { useDispatch } from 'react-redux'
+import { deleteTask, getAllTasks, updateTaskStatus } from '../redux/task/taskAction'
 
 
 const Task = ({ taskId, title, description, status }) => {
+
+    // redux 
+    const dispatch = useDispatch()
 
     const [completed, setCompleted] = useState(status)
 
     const handleCheckbox = () => {
         setCompleted(!completed)
+        // console.log(taskId)
+        dispatch(updateTaskStatus(taskId))
     }
-    const handleDelete = () => {
-        console.log('Delete a Task')
+    const handleDelete = async () => {
+        // console.log(taskId)
+        await dispatch(deleteTask(taskId))
+        dispatch(getAllTasks())
     }
+    
+
 
 
 

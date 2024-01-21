@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 // import routing navigator
 import { NavigationContainer } from '@react-navigation/native'
@@ -8,12 +8,19 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { Home, Login, Register, Profile, Welcome, MyCamera, ChangePassword, } from './screens'
 import { Footer, Loader } from './components'
 
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { loadUser } from './redux/auth/authAction'
 
 const Stack = createNativeStackNavigator()
 
 
 const Main = () => {
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(loadUser())
+    }, [dispatch])
 
     const { loading, isAuthenticated } = useSelector(state => state.auth)
 

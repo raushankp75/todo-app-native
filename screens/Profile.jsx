@@ -39,7 +39,7 @@ const Profile = ({ navigation }) => {
             <Text style={styles.photoText}>Change Photo</Text>
           </TouchableOpacity>
 
-          <View style={styles.inputs}>
+          {/* <View style={styles.inputs}>
             {!show ? (
               <>
                 <Text style={styles.nameText}>{name}</Text>
@@ -54,6 +54,11 @@ const Profile = ({ navigation }) => {
                 <Button onPress={submitHandler} style={styles.btn}><Text style={styles.btnText}>update</Text></Button>
               </>
             )}
+          </View> */}
+
+          <View style={styles.inputs}>
+            <TextInput value={name} onChangeText={setName} placeholder='Enter Your Name' style={styles.input} />
+            <Button onPress={submitHandler} style={styles.btn}><Text style={styles.btnText}>update</Text></Button>
           </View>
 
           <TouchableOpacity onPress={() => navigation.navigate('change/password')} style={styles.changePassBtn}>
@@ -102,12 +107,12 @@ const styles = StyleSheet.create({
   },
   inputs: {
     width: '90%',
-    gap: 20,
-    flexDirection: 'row',
+    // gap: 20,
+    // flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-evenly',
+    // justifyContent: 'space-evenly',
     gap: 10,
-    margin: 10
+    // margin: 10
   },
   nameText: {
     fontSize: 22
