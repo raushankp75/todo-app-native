@@ -1,45 +1,97 @@
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, Platform, StatusBar, ScrollView } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Platform, StatusBar, ScrollView, Alert } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { Avatar, Button } from 'react-native-paper'
 
-const Profile = ({ navigation }) => {
+import { useDispatch, useSelector } from 'react-redux'
+import { loadUser, logout } from '../redux/auth/authAction'
+import { updateProfile } from '../redux/user/userAction'
 
-  const [avatar, setAvatar] = useState("")
-  const [name, setName] = useState("Raushan Kumar")
-  const [show, setShow] = useState(false)
+import mime from 'mime'
+import { Loader } from '../components'
+
+
+const Profile = ({ navigation, route }) => {
+
+  // redux
+  const dispatch = useDispatch()
+  const { user } = useSelector(state => state.auth)
+  const { loading, message, error } = useSelector(state => state.userMessage)
+
+  const [avatar, setAvatar] = useState(user?.avatar?.url)
+  const [name, setName] = useState(user?.name)
+  // const [show, setShow] = useState(false)
+
 
   const handleImage = () => {
-    // console.log('Image here')
-    navigation.navigate('mycamera')
+    navigation.navigate('mycamera', { updateProfile: true })
   }
 
+  // get image from params after select image
+  useEffect(() => {
+    // console.log(route.params.image)
+
+    if (route.params) {
+      if (route.params.image) {
+        setAvatar(route.params.image)
+      }
+    }
+  }, [route])
+
+
+
   const submitHandler = () => {
-    console.log(`avatar ${avatar}, name ${name}`)
+    // console.log(`avatar ${avatar}, name ${name}`)
 
-    setName("")
+    const myForm = new FormData()
+    myForm.append('name', name)
+    myForm.append('avatar', {
+      uri: avatar,
+      type: mime.getType(avatar),
+      name: avatar.split("/").pop()
+    })
 
-    setShow(!show)
+    dispatch(updateProfile(myForm))
+    // dispatch(loadUser())
+
+    // setName("")
+    // setShow(!show)
   }
 
   const logoutHandler = () => {
-
+    dispatch(logout())
   }
 
 
-  return (
-    <ScrollView>
-      <View style={styles.container}>
-        <TouchableOpacity onPress={logoutHandler} style={styles.logoutBtn}>
-          <Text style={styles.logoutBtnText}>Logout</Text>
-        </TouchableOpacity>
+  useEffect(() => {
+    if (message) {
+      Alert.alert(message)
+      dispatch({ type: 'clearMessage' })
+    }
+    if (error) {
+      Alert.alert(error)
+      dispatch({ type: 'clearError' })
+    }
+  }, [alert, message, error, dispatch])
 
-        <View style={styles.content}>
-          <TouchableOpacity onPress={handleImage} style={styles.changePhoto}>
-            <Avatar.Image source={{ uri: avatar ? avatar : null }} size={200}></Avatar.Image>
-            <Text style={styles.photoText}>Change Photo</Text>
+
+
+  return (
+    loading ?
+      <Loader />
+      :
+      <ScrollView>
+        <View style={styles.container}>
+          <TouchableOpacity onPress={logoutHandler} style={styles.logoutBtn}>
+            <Text style={styles.logoutBtnText}>Logout</Text>
           </TouchableOpacity>
 
-          {/* <View style={styles.inputs}>
+          <View style={styles.content}>
+            <TouchableOpacity onPress={handleImage} style={styles.changePhoto}>
+              <Avatar.Image source={{ uri: avatar ? avatar : null }} size={200}></Avatar.Image>
+              <Text style={styles.photoText}>Change Photo</Text>
+            </TouchableOpacity>
+
+            {/* <View style={styles.inputs}>
             {!show ? (
               <>
                 <Text style={styles.nameText}>{name}</Text>
@@ -56,17 +108,17 @@ const Profile = ({ navigation }) => {
             )}
           </View> */}
 
-          <View style={styles.inputs}>
-            <TextInput value={name} onChangeText={setName} placeholder='Enter Your Name' style={styles.input} />
-            <Button onPress={submitHandler} style={styles.btn}><Text style={styles.btnText}>update</Text></Button>
-          </View>
+            <View style={styles.inputs}>
+              <TextInput value={name} onChangeText={setName} placeholder='Enter Your Name' style={styles.input} />
+              <Button onPress={submitHandler} style={styles.btn}><Text style={styles.btnText}>update</Text></Button>
+            </View>
 
-          <TouchableOpacity onPress={() => navigation.navigate('change/password')} style={styles.changePassBtn}>
-            <Text style={styles.changePassBtnText}>change password</Text>
-          </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('change/password')} style={styles.changePassBtn}>
+              <Text style={styles.changePassBtnText}>change password</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
   )
 }
 
@@ -119,8 +171,8 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '70%',
-    backgroundColor: '#fff',
-    borderWidth: 1,
+    // backgroundColor: '#fff',
+    borderBottomWidth: 1,
     borderColor: '#b5b5b5',
     paddingLeft: 10,
     paddingRight: 10,

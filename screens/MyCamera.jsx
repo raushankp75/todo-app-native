@@ -5,11 +5,14 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import * as ImagePicker from 'expo-image-picker'
 
 
-const MyCamera = ({ navigation }) => {
+const MyCamera = ({ navigation, route }) => {
+
+    // console.log(route.params.updateProfile)
 
     const [hasPermission, setHasPermission] = useState(null);
     const [type, setType] = useState(CameraType.back);
     const [camera, setCamera] = useState(null);
+
 
     useEffect(() => {
         (async () => {
@@ -30,7 +33,7 @@ const MyCamera = ({ navigation }) => {
     const openImagePickerAsync = async () => {
         const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-        if(permissionResult.granted === false) {
+        if (permissionResult.granted === false) {
             alert('Permission to access camera roll is required!')
             return;
         }
@@ -40,14 +43,26 @@ const MyCamera = ({ navigation }) => {
         })
 
         // console.log(data.assets[0].uri)
-        return navigation.navigate('register', { image: data.assets[0].uri })
+
+        // conditionallly navigate after choose pic
+        if (route.params.updateProfile) {
+            return navigation.navigate('profile', { image: data.assets[0].uri })
+        } else {
+            return navigation.navigate('register', { image: data.assets[0].uri })
+        }
     }
 
     // Click photo
     const clickPicture = async () => {
         const data = await camera.takePictureAsync()
         // console.log(data.uri)
-        return navigation.navigate('register', { image: data.uri })
+
+        // conditionallly navigate after click pic
+        if (route.params.updateProfile) {
+            return navigation.navigate('profile', { image: data.uri })
+        } else {
+            return navigation.navigate('register', { image: data.uri })
+        }
     }
 
     // Flip camera
