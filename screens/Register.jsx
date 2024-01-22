@@ -2,37 +2,57 @@ import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView 
 import React, { useEffect, useState } from 'react'
 import Registerbg from '../assets/registerbg.jpg'
 import { Avatar, Button } from 'react-native-paper'
-import LocalAvatar from '../assets/localAvatar.png'
+
+import { useDispatch } from 'react-redux'
+import { register } from '../redux/auth/authAction'
+
+import mime from 'mime'
 
 
 const Register = ({ navigation, route }) => {
 
+  
   const [avatar, setAvatar] = useState("")
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-
+  
+  // redux
+  const dispatch = useDispatch()
+  
   const handleImage = () => {
-    // console.log('Image here')
-    navigation.navigate('mycamera')
+    // navigation.navigate('mycamera')
+    navigation.navigate('mycamera', { registerUser: true })
   }
-
-  const registerHandler = () => {
-    console.log('user register')
-  }
-
 
   // get image from params after select image
   useEffect(() => {
     // console.log(route.params.image)
 
-    if(route.params) {
-      if(route.params.image){
+    if (route.params) {
+      if (route.params.image) {
         setAvatar(route.params.image)
       }
     }
   }, [route])
-  
+
+
+
+  const registerHandler = () => {
+    const myForm = new FormData()
+    myForm.append('name', name)
+    myForm.append('email', email)
+    myForm.append('password', password)
+    myForm.append('avatar', {
+      uri: avatar,
+      type: mime.getType(avatar),
+      name: avatar.split("/").pop()
+    })
+
+    dispatch(register(myForm))
+  }
+
+
 
 
   return (
@@ -47,7 +67,7 @@ const Register = ({ navigation, route }) => {
 
         <TouchableOpacity onPress={handleImage} style={styles.changePhoto}>
           <Avatar.Image source={{ uri: avatar ? avatar : null }} size={100}></Avatar.Image>
-          <Text>Change Photo</Text>
+          <Text style={styles.photoText}>Select a Photo</Text>
         </TouchableOpacity>
 
         <View style={styles.inputs}>
@@ -79,7 +99,7 @@ export default Register
 const styles = StyleSheet.create({
   imageStyle: {
     height: 230,
-    flex: 1,
+    // flex: 1,
     // width: '100%'
     width: null
   },
@@ -99,8 +119,11 @@ const styles = StyleSheet.create({
   subTitle: {
     color: 'gray'
   },
-  changePhoto:{
-    alignItems:'center'
+  changePhoto: {
+    alignItems: 'center'
+  },
+  photoText: {
+    fontSize: 18
   },
   inputs: {
     gap: 10

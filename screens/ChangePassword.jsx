@@ -3,15 +3,24 @@ import React, { useState } from 'react'
 import { Button } from 'react-native-paper'
 import { StyleSheet } from 'react-native'
 
+import { useDispatch } from 'react-redux'
+import { updatePassword } from '../redux/user/userAction'
+
+
 const ChangePassword = () => {
 
   const [oldPassword, setOldPassword] = useState("")
   const [newPassword, setNewPassword] = useState("")
 
+  // redux
+  const dispatch = useDispatch()
+
   const changePasswordHandler = () => {
     if (oldPassword === newPassword) {
       Alert.alert('New Password can not be same as Old Password')
     }
+
+    dispatch(updatePassword(oldPassword, newPassword))
   }
 
 

@@ -29,10 +29,9 @@ const Main = () => {
             <Loader />
             :
             <NavigationContainer>
-                <Stack.Navigator initialRouteName={isAuthenticated ? 'home' : 'welcome'}>
+                <Stack.Navigator initialRouteName={isAuthenticated ? 'home' : 'login'}>
                     <Stack.Screen name='home' component={Home} options={{ headerShown: false }} />
                     <Stack.Screen name='taskupdate' component={UpdateTask} options={{ headerShown: false }} />
-                    <Stack.Screen name='welcome' component={Welcome} options={{ headerShown: false }} />
                     <Stack.Screen name='login' component={Login} options={{ headerShown: false }} />
                     <Stack.Screen name='register' component={Register} options={{ headerShown: false }} />
                     <Stack.Screen name='mycamera' component={MyCamera} options={{ headerShown: false }} />

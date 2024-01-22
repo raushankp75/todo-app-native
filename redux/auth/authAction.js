@@ -1,6 +1,6 @@
 import axios from "axios";
 import { serverUrl } from "../serverUrl";
-import { config } from "../config";
+import { config, configMultipart } from "../config";
 
 export const login = (email, password) => async (dispatch) => {
     try {
@@ -15,6 +15,15 @@ export const login = (email, password) => async (dispatch) => {
     }
 }
 
+export const register = (formData) => async (dispatch) => {
+    try {
+        dispatch({ type: 'registerRequest' })
+        await axios.post(`${serverUrl}/user/register`, formData, configMultipart)
+        dispatch({ type: 'registerSuccess', payload: data })
+    } catch (error) {
+        dispatch({ type: 'registerFailure', payload: error.response.data.message })
+    }
+}
 
 export const loadUser = () => async (dispatch) => {
     try {

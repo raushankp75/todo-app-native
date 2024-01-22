@@ -51,7 +51,6 @@ const Profile = ({ navigation, route }) => {
     })
 
     dispatch(updateProfile(myForm))
-    // dispatch(loadUser())
 
     // setName("")
     // setShow(!show)

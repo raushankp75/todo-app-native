@@ -45,11 +45,9 @@ const MyCamera = ({ navigation, route }) => {
         // console.log(data.assets[0].uri)
 
         // conditionallly navigate after choose pic
-        if (route.params.updateProfile) {
-            return navigation.navigate('profile', { image: data.assets[0].uri })
-        } else {
-            return navigation.navigate('register', { image: data.assets[0].uri })
-        }
+        if (route.params.registerUser) return navigation.navigate('register', { image: data.assets[0].uri })
+        if (route.params.updateProfile) return navigation.navigate('profile', { image: data.assets[0].uri })
+
     }
 
     // Click photo
@@ -58,11 +56,10 @@ const MyCamera = ({ navigation, route }) => {
         // console.log(data.uri)
 
         // conditionallly navigate after click pic
-        if (route.params.updateProfile) {
-            return navigation.navigate('profile', { image: data.uri })
-        } else {
-            return navigation.navigate('register', { image: data.uri })
-        }
+        if (route.params.registerUser) return navigation.navigate('register', { image: data.uri })
+        if (route.params.updateProfile) return navigation.navigate('profile', { image: data.uri })
+
+
     }
 
     // Flip camera
