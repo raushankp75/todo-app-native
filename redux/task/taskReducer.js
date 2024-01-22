@@ -12,6 +12,17 @@ export const taskMessageReducer = createReducer({}, (builder) => {
             state.loading = false;
             state.error = action.payload;
         }),
+        builder.addCase('updateTaskRequest', (state) => {
+            state.loading = true;
+        }),
+        builder.addCase('updateTaskSuccess', (state, action) => {
+            state.loading = false;
+            state.message = action.payload
+        }),
+        builder.addCase('updateTaskFailure', (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        }),
         builder.addCase('updateTaskStatusRequest', (state) => {
             state.loading = true;
         }),

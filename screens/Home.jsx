@@ -14,10 +14,10 @@ const Home = () => {
 
 
     // redux
-    const {tasks} = useSelector(state=> state.tasks)
+    const { tasks } = useSelector(state => state.tasks)
 
     const dispatch = useDispatch()
-    const {loading, message, error} = useSelector(state=> state.taskMessage)
+    const { loading, message, error } = useSelector(state => state.taskMessage)
 
     const [openDialog, setOpenDialog] = useState(false)
     const [title, setTitle] = useState("")
@@ -26,7 +26,7 @@ const Home = () => {
     const toggleDialog = () => {
         setOpenDialog(!openDialog)
     }
-  
+
     const addTaskHandler = () => {
         // console.log(`Title: ${title}, Description: ${description}`)
         dispatch(addTask(title, description))
@@ -41,13 +41,13 @@ const Home = () => {
     }, [title, description])
 
     useEffect(() => {
-        if(message){
+        if (message) {
             Alert.alert(message)
-            dispatch({type: 'clearMessage'})
+            dispatch({ type: 'clearMessage' })
         }
-        if(error){
+        if (error) {
             Alert.alert(error)
-            dispatch({type: 'clearError'})
+            dispatch({ type: 'clearError' })
         }
     }, [alert, message, error, dispatch])
 
@@ -64,11 +64,10 @@ const Home = () => {
                             <Task key={task._id} taskId={task._id} title={task.title} description={task.description} status={task.completed} />
                         ))}
                     </ScrollView>
-
-                    <TouchableOpacity onPress={toggleDialog} style={styles.addIcon}>
-                        <Icon name='add-to-list' size={32} color='#4682B4' />
-                    </TouchableOpacity>
                 </SafeAreaView>
+                <TouchableOpacity onPress={toggleDialog} style={styles.addIcon}>
+                    <Icon name='add-to-list' size={32} color='#4682B4' />
+                </TouchableOpacity>
             </View>
 
             <Dialog visible={openDialog} onDismiss={toggleDialog}>

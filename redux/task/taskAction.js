@@ -22,10 +22,20 @@ export const getAllTasks = () => async (dispatch) => {
     }
 }
 
+export const updateTask = (title, description, taskId) => async (dispatch) => {
+    try {
+        dispatch({ type: 'updateTaskRequest' })
+        const { data } = await axios.put(`${serverUrl}/task/${taskId}`, { title, description }, config)
+        dispatch({ type: 'updateTaskSuccess', payload: data.message })
+    } catch (error) {
+        dispatch({ type: 'updateTaskFailure', payload: error.response.data.message })
+    }
+}
+
 export const updateTaskStatus = (taskId) => async (dispatch) => {
     try {
         dispatch({ type: 'updateTaskStatusRequest' })
-        const { data } = await axios.get(`${serverUrl}/task/${taskId}`)
+        const { data } = await axios.get(`${serverUrl}/task/status/${taskId}`)
         dispatch({ type: 'updateTaskStatusSuccess', payload: data.message })
     } catch (error) {
         dispatch({ type: 'updateTaskStatusFailure', payload: error.response.data.message })

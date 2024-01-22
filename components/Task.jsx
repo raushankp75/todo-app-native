@@ -1,13 +1,17 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 
 import { Checkbox } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import { useNavigation } from '@react-navigation/native'
+
 import { useDispatch } from 'react-redux'
 import { deleteTask, getAllTasks, updateTaskStatus } from '../redux/task/taskAction'
 
 
 const Task = ({ taskId, title, description, status }) => {
+
+    const navigation = useNavigation()
 
     // redux 
     const dispatch = useDispatch()
@@ -18,14 +22,19 @@ const Task = ({ taskId, title, description, status }) => {
         setCompleted(!completed)
         // console.log(taskId)
         dispatch(updateTaskStatus(taskId))
+        dispatch(getAllTasks())
     }
     const handleDelete = async () => {
         // console.log(taskId)
         await dispatch(deleteTask(taskId))
         dispatch(getAllTasks())
     }
-    
 
+
+    const handleTaskUpdateButton = (taskId) => {
+        navigation.navigate('taskupdate', { id: taskId })
+        //    console.log(taskId)
+    }
 
 
 
@@ -34,10 +43,10 @@ const Task = ({ taskId, title, description, status }) => {
             <View style={styles.leftView}>
                 <Checkbox onPress={handleCheckbox} status={completed ? 'checked' : 'unchecked'} color='#474747' />
 
-                <View style={styles.taskDetails}>
+                <TouchableOpacity onPress={() => handleTaskUpdateButton(taskId)} style={styles.taskDetails}>
                     <Text style={styles.title}>{title}</Text>
                     <Text style={styles.description}>{description}</Text>
-                </View>
+                </TouchableOpacity>
             </View>
 
             <Icon onPress={handleDelete} name='delete' color='#D22B2B' size={25} />
@@ -64,13 +73,13 @@ const styles = StyleSheet.create({
         elevation: 10,
         borderRadius: 20,
     },
-    leftView:{
-        flexDirection:'row',
-        alignItems:'center',
-        gap:5
+    leftView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 5
     },
     taskDetails: {
-        width: '70%'
+        width: '81%'
     },
     title: {
         color: '#E5E4E2',

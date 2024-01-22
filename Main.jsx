@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 // import screens
-import { Home, Login, Register, Profile, Welcome, MyCamera, ChangePassword, } from './screens'
+import { Home, Login, Register, Profile, Welcome, MyCamera, ChangePassword, UpdateTask, } from './screens'
 import { Footer, Loader } from './components'
 
 import { useDispatch, useSelector } from 'react-redux'
@@ -31,6 +31,7 @@ const Main = () => {
             <NavigationContainer>
                 <Stack.Navigator initialRouteName={isAuthenticated ? 'home' : 'welcome'}>
                     <Stack.Screen name='home' component={Home} options={{ headerShown: false }} />
+                    <Stack.Screen name='taskupdate' component={UpdateTask} options={{ headerShown: false }} />
                     <Stack.Screen name='welcome' component={Welcome} options={{ headerShown: false }} />
                     <Stack.Screen name='login' component={Login} options={{ headerShown: false }} />
                     <Stack.Screen name='register' component={Register} options={{ headerShown: false }} />
