@@ -1,7 +1,7 @@
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView, Button, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Registerbg from '../assets/registerbg.jpg'
-import { Avatar, Button } from 'react-native-paper'
+import { Avatar } from 'react-native-paper'
 
 import { useDispatch } from 'react-redux'
 import { register } from '../redux/auth/authAction'
@@ -16,6 +16,7 @@ const Register = ({ navigation, route }) => {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
   
   // redux
   const dispatch = useDispatch()
@@ -38,7 +39,10 @@ const Register = ({ navigation, route }) => {
 
 
 
-  const registerHandler = () => {
+  const registerHandler = async () => {
+    if(password !== confirmPassword){
+      Alert.alert('Both password not matched!')
+    }
     const myForm = new FormData()
     myForm.append('name', name)
     myForm.append('email', email)
@@ -49,7 +53,7 @@ const Register = ({ navigation, route }) => {
       name: avatar.split("/").pop()
     })
 
-    dispatch(register(myForm))
+    await dispatch(register(myForm))
   }
 
 
@@ -71,12 +75,13 @@ const Register = ({ navigation, route }) => {
         </TouchableOpacity>
 
         <View style={styles.inputs}>
-          <TextInput value={name} onChangeText={setName} placeholder='Enter Your Name' style={styles.input} />
-          <TextInput value={email} onChangeText={setEmail} placeholder='Enter Your Email' style={styles.input} />
-          <TextInput value={password} onChangeText={setPassword} placeholder='Enter Your Password' secureTextEntry style={styles.input} />
+          <TextInput value={name} onChangeText={setName} placeholder='Full Name ex: John Doe' style={styles.input} />
+          <TextInput keyboardType='email-address' value={email} onChangeText={setEmail} placeholder='Email Id ex: johndoe123@gmail.com' style={styles.input} />
+          <TextInput secureTextEntry value={password} onChangeText={setPassword} placeholder='Password ex: johXX52XX' style={styles.input} />
+          <TextInput secureTextEntry value={confirmPassword} onChangeText={setConfirmPassword} placeholder='Confirm Password ex: johXX52XX' style={styles.input} />
         </View>
 
-        <Button disabled={!email || !password} onPress={registerHandler} style={styles.registerBtn}><Text style={styles.registerBtnText}>Register</Text></Button>
+        <Button disabled={!email || !password} onPress={registerHandler} color='green' title='Signup'></Button>
 
 
         <View style={styles.loginBtn}>
@@ -123,26 +128,22 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   photoText: {
-    fontSize: 18
+    fontSize: 18,
+    fontWeight:'600',
+    color:'blue'
   },
   inputs: {
     gap: 10
   },
   input: {
-    backgroundColor: '#fff',
-    borderWidth: 1,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+    fontSize: 17,
     borderColor: '#b5b5b5',
-    padding: 10,
-    borderRadius: 5,
-    fontSize: 16
-  },
-  registerBtn: {
-    backgroundColor: '#4682B4',
-  },
-  registerBtnText: {
-    color: '#fff',
-    fontWeight: '600',
-    fontSize: 18
+    borderWidth: 2,
+    borderRadius: 3
   },
   loginBtn: {
     flexDirection: 'row',
@@ -152,6 +153,7 @@ const styles = StyleSheet.create({
   },
   loginBtnText: {
     color: '#0047AB',
-    fontSize: 18
+    fontSize: 18,
+    fontWeight:'600'
   }
 })

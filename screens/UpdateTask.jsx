@@ -7,6 +7,9 @@ import { deleteTask, getAllTasks, getSingleTask, updateTask, updateTaskStatus } 
 import { serverUrl } from '../redux/serverUrl'
 import axios from 'axios'
 
+import moment from 'moment';
+
+
 const UpdateTask = ({ route, navigation }) => {
 
     // console.log(route.params.id)
@@ -17,6 +20,7 @@ const UpdateTask = ({ route, navigation }) => {
 
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
+    const [date, setDate] = useState("")
 
 
     // get single task data
@@ -26,6 +30,7 @@ const UpdateTask = ({ route, navigation }) => {
             // console.log(data)
             setTitle(data.title)
             setDescription(data.description)
+            setDate(data.createdAt)
         } catch (error) {
             Alert.alert(error)
         }
@@ -54,6 +59,10 @@ const UpdateTask = ({ route, navigation }) => {
     }
 
 
+    // time ago features
+    const dateTimeAgo = moment.utc(date).local().startOf('sec').fromNow()
+    // const dateTimeAgo = moment(new Date(createdAt)).fromNow();
+
 
 
     return (
@@ -64,7 +73,7 @@ const UpdateTask = ({ route, navigation }) => {
                     <Icon onPress={handleDelete} name='delete' color='#D22B2B' size={25} />
                 </View>
 
-                <Text style={styles.content}>
+                {/* <Text style={styles.content}> */}
                     <View style={styles.inputs}>
                         <View>
                             <Text style={styles.inputLabels}>This Is Your Task Title</Text>
@@ -73,10 +82,12 @@ const UpdateTask = ({ route, navigation }) => {
 
                         <View>
                             <Text style={styles.inputLabels}>This Is Your Task Description</Text>
-                            <TextInput value={description} onChangeText={setDescription} style={styles.input} />
+                            <TextInput multiline value={description} onChangeText={setDescription} style={[styles.input, styles.multilineText]} />
                         </View>
+
+                        <Text style={styles.timeTxt}>{dateTimeAgo}</Text>
                     </View>
-                </Text>
+                {/* </Text> */}
             </SafeAreaView>
             <TouchableOpacity onPress={updateTaskHandler} disabled={!title || !description} style={styles.updateIcon}>
                 <Icon name='check' size={32} color='#4682B4' />
@@ -111,28 +122,35 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 22
     },
-    content: {
-        width: '80%',
-        padding: 20
-    },
+    // content: {
+    //     // width: '80%',
+    //     padding: 20
+    // },
     inputs: {
-        width: '80%',
+        padding:20,
         gap: 20
     },
     input: {
-        width: '80%',
         backgroundColor: '#4682B4',
         padding: 10,
         fontSize: 18,
         color: '#D3D3D3',
-        borderWidth: 0,
         borderColor: '#b5b5b5',
         borderBottomWidth: 2
     },
+    multilineText:{
+        minHeight:65,
+        textAlignVertical:'top'
+    },
     inputLabels: {
         color: '#B6D0E2',
-        fontWeight: '800',
+        fontWeight: '600',
         fontSize: 18
+    },
+    timeTxt: {
+        color: '#C0C0C0',
+        fontSize: 12,
+        alignSelf:'flex-end'
     },
     updateIcon: {
         backgroundColor: '#fff',

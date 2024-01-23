@@ -1,7 +1,6 @@
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native'
+import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView, Alert, Button } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Loginbg from '../assets/loginbg.png'
-import { Button } from 'react-native-paper'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../redux/auth/authAction'
@@ -44,15 +43,22 @@ const Login = ({ navigation }) => {
         </View>
 
         <View style={styles.inputs}>
-          <TextInput value={email} onChangeText={setEmail} placeholder='Enter Your Email' style={styles.input} />
-          <TextInput value={password} onChangeText={setPassword} placeholder='Enter Your Password' secureTextEntry style={styles.input} />
+          <View>
+            <Text style={styles.inputLabels}>Email Id</Text>
+            <TextInput keyboardType='email-address' value={email} onChangeText={setEmail} placeholder='ex: johndoe123@gmail.com' style={styles.input} />
+          </View>
+
+          <View>
+            <Text style={styles.inputLabels}>Password</Text>
+            <TextInput secureTextEntry value={password} onChangeText={setPassword} placeholder='ex: must be at least 5 characters' style={styles.input} />
+          </View>
         </View>
 
         <TouchableOpacity onPress={() => navigation.navigate('forgot/password')} style={styles.forgotPass}>
           <Text style={styles.forgotPassText}>Forgot Password?</Text>
         </TouchableOpacity>
 
-        <Button disabled={!email || !password} onPress={loginHandler} style={styles.loginBtn}><Text style={styles.loginBtnText}>Login</Text></Button>
+        <Button disabled={!email || !password} onPress={loginHandler} title='Login'></Button>
 
 
         <View style={styles.registerBtn}>
@@ -93,31 +99,30 @@ const styles = StyleSheet.create({
     color: 'gray'
   },
   inputs: {
-    gap: 20
+    gap:10
   },
   input: {
-    backgroundColor: '#fff',
-    borderWidth: 1,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+    fontSize: 18,
     borderColor: '#b5b5b5',
-    padding: 10,
-    borderRadius: 5,
-    fontSize: 16
+    borderWidth: 2,
+    borderRadius: 3
   },
-  forgotPass:{
-    alignSelf:'flex-end'
-  },
-  forgotPassText:{
-    color:'blue',
-    fontWeight:'800',
-    fontSize:15
-  },
-  loginBtn: {
-    backgroundColor: '#4682B4',
-  },
-  loginBtnText: {
-    color: '#fff',
+  inputLabels: {
+    color: '#555',
     fontWeight: '600',
     fontSize: 18
+  },
+  forgotPass: {
+    alignSelf: 'flex-end'
+  },
+  forgotPassText: {
+    color: 'blue',
+    fontWeight: '800',
+    fontSize: 15
   },
   registerBtn: {
     flexDirection: 'row',
@@ -127,6 +132,7 @@ const styles = StyleSheet.create({
   },
   registerBtnText: {
     color: '#0047AB',
-    fontSize: 18
+    fontSize: 18,
+    fontWeight:'600'
   }
 })

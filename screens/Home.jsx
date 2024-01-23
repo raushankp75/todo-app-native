@@ -1,11 +1,11 @@
-import { View, Text, SafeAreaView, Platform, StatusBar, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native'
+import { View, Text, SafeAreaView, Platform, StatusBar, StyleSheet, TouchableOpacity, ScrollView, Alert, TextInput } from 'react-native'
 import React, { useEffect, useState } from 'react'
 
 // import components
 import { Task } from '../components'
 
 import Icon from 'react-native-vector-icons/Entypo'
-import { Dialog, Button, TextInput } from 'react-native-paper'
+import { Dialog, } from 'react-native-paper'
 import { useDispatch, useSelector } from 'react-redux'
 import { addTask, getAllTasks } from '../redux/task/taskAction'
 
@@ -61,7 +61,7 @@ const Home = () => {
 
                     <ScrollView>
                         {tasks && tasks.map((task) => (
-                            <Task key={task._id} taskId={task._id} title={task.title} description={task.description} status={task.completed} />
+                            <Task key={task._id} taskId={task._id} title={task.title} description={task.description} status={task.completed} createdAt={task.createdAt} />
                         ))}
                     </ScrollView>
                 </SafeAreaView>
@@ -74,8 +74,8 @@ const Home = () => {
                 <Dialog.Title>New Task</Dialog.Title>
 
                 <Dialog.Content style={{ gap: 20 }}>
-                    <TextInput name='title' value={title} onChangeText={setTitle} style={styles.input} placeholder='Task Title' />
-                    <TextInput name='description' value={description} onChangeText={setDescription} style={styles.input} placeholder='Task Content' />
+                    <TextInput value={title} onChangeText={setTitle} style={styles.input} placeholder='Task Title' />
+                    <TextInput multiline value={description} onChangeText={setDescription} style={[styles.input, styles.multilineText]} placeholder='Task Content/Description' />
 
                     <View style={styles.dialogFooter}>
                         <TouchableOpacity onPress={toggleDialog}>
@@ -127,6 +127,16 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 30,
         right: 10
+    },
+    input: {
+        padding: 10,
+        fontSize: 18,
+        borderColor: '#b5b5b5',
+        borderBottomWidth: 2
+    },
+    multilineText: {
+        minHeight: 65,
+        textAlignVertical: 'top'
     },
     dialogFooter: {
         flexDirection: 'row',

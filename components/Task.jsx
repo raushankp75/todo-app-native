@@ -8,8 +8,11 @@ import { useNavigation } from '@react-navigation/native'
 import { useDispatch } from 'react-redux'
 import { deleteTask, getAllTasks, updateTaskStatus } from '../redux/task/taskAction'
 
+import moment from 'moment';
 
-const Task = ({ taskId, title, description, status }) => {
+
+
+const Task = ({ taskId, title, description, status, createdAt }) => {
 
     const navigation = useNavigation()
 
@@ -37,6 +40,11 @@ const Task = ({ taskId, title, description, status }) => {
     }
 
 
+    // time ago features
+    const dateTimeAgo = moment.utc(createdAt).local().startOf('sec').fromNow()
+    // const dateTimeAgo = moment(new Date(createdAt)).fromNow();
+
+
 
     return (
         <View style={styles.main}>
@@ -46,6 +54,7 @@ const Task = ({ taskId, title, description, status }) => {
                 <TouchableOpacity onPress={() => handleTaskUpdateButton(taskId)} style={styles.taskDetails}>
                     <Text style={styles.title}>{title}</Text>
                     <Text style={styles.description}>{description}</Text>
+                    <Text style={styles.timeTxt}>{dateTimeAgo}</Text>
                 </TouchableOpacity>
             </View>
 
@@ -68,7 +77,7 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
         paddingRight: 10,
         paddingTop: 2,
-        paddingBottom: 8,
+        paddingBottom: 2,
         margin: 7,
         elevation: 10,
         borderRadius: 20,
@@ -83,10 +92,15 @@ const styles = StyleSheet.create({
     },
     title: {
         color: '#E5E4E2',
-        marginVertical: 7,
-        fontSize: 18
+        fontSize: 16,
+        fontWeight: '600'
     },
     description: {
         color: '#D3D3D3'
+    },
+    timeTxt: {
+        color: '#C0C0C0',
+        fontSize: 12,
+        alignSelf:'flex-end'
     }
 })
