@@ -27,6 +27,32 @@ export const userMessageReducer = createReducer({}, (builder) => {
         state.error = action.payload;
     }),
     
+    // Forgot password
+    builder.addCase('forgotPasswordRequest', (state) => {
+        state.loading = true;
+    }),
+    builder.addCase('forgotPasswordSuccess', (state, action) => {
+        state.loading = false;
+        state.message = action.payload
+    }),
+    builder.addCase('forgotPasswordFailure', (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+    }),
+
+    // Reset password
+    builder.addCase('resetPasswordRequest', (state) => {
+        state.loading = true;
+    }),
+    builder.addCase('resetPasswordSuccess', (state, action) => {
+        state.loading = false;
+        state.message = action.payload
+    }),
+    builder.addCase('resetPasswordFailure', (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+    }),
+    
     builder.addCase('clearError', (state) => {
         state.error = null;
     }),

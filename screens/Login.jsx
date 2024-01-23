@@ -48,6 +48,10 @@ const Login = ({ navigation }) => {
           <TextInput value={password} onChangeText={setPassword} placeholder='Enter Your Password' secureTextEntry style={styles.input} />
         </View>
 
+        <TouchableOpacity onPress={() => navigation.navigate('forgot/password')} style={styles.forgotPass}>
+          <Text style={styles.forgotPassText}>Forgot Password?</Text>
+        </TouchableOpacity>
+
         <Button disabled={!email || !password} onPress={loginHandler} style={styles.loginBtn}><Text style={styles.loginBtnText}>Login</Text></Button>
 
 
@@ -77,7 +81,7 @@ const styles = StyleSheet.create({
   loginBox: {
     padding: 30,
 
-    gap: 20,
+    gap: 15,
   },
   title: {
     fontSize: 24,
@@ -98,6 +102,14 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     fontSize: 16
+  },
+  forgotPass:{
+    alignSelf:'flex-end'
+  },
+  forgotPassText:{
+    color:'blue',
+    fontWeight:'800',
+    fontSize:15
   },
   loginBtn: {
     backgroundColor: '#4682B4',

@@ -21,3 +21,23 @@ export const updatePassword = (oldPassword, newPassword) => async (dispatch) => 
         dispatch({ type: 'updatePasswordFailure', payload: error.response.data.message })
     }
 }
+
+export const forgotPassword = (email) => async (dispatch) => {
+    try {
+        dispatch({ type: 'forgotPasswordRequest' })
+        const { data } = await axios.post(`${serverUrl}/user/forget/password`, {email}, config)
+        dispatch({ type: 'forgotPasswordSuccess', payload: data.message })
+    } catch (error) {
+        dispatch({ type: 'forgotPasswordFailure', payload: error.response.data.message })
+    }
+}
+
+export const resetPassword = (otp, newPassword) => async (dispatch) => {
+    try {
+        dispatch({ type: 'resetPasswordRequest' })
+        const { data } = await axios.put(`${serverUrl}/user/reset/password`, {otp, newPassword}, config)
+        dispatch({ type: 'resetPasswordSuccess', payload: data.message })
+    } catch (error) {
+        dispatch({ type: 'resetPasswordFailure', payload: error.response.data.message })
+    }
+}
