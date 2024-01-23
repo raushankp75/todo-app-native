@@ -1,13 +1,13 @@
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, Platform, StatusBar, ScrollView, Alert } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Platform, StatusBar, ScrollView, Alert, Button } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Avatar, Button } from 'react-native-paper'
+import { Avatar } from 'react-native-paper'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { loadUser, logout } from '../redux/auth/authAction'
 import { updateProfile } from '../redux/user/userAction'
 
 import mime from 'mime'
-import { Loader } from '../components'
+import { Loader, UserVerify } from '../components'
 
 
 const Profile = ({ navigation, route }) => {
@@ -80,11 +80,19 @@ const Profile = ({ navigation, route }) => {
       :
       <ScrollView>
         <View style={styles.container}>
-          <TouchableOpacity onPress={logoutHandler} style={styles.logoutBtn}>
-            <Text style={styles.logoutBtnText}>Logout</Text>
-          </TouchableOpacity>
+          <View style={styles.header}>
+            <TouchableOpacity onPress={() => navigation.navigate('change/password')} style={styles.changePassBtn}>
+              <Text style={styles.changePassBtnText}>change password</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={logoutHandler} style={styles.logoutBtn}>
+              <Text style={styles.logoutBtnText}>Logout</Text>
+            </TouchableOpacity>
+          </View>
 
           <View style={styles.content}>
+            {user.verified ? null : (<UserVerify />)}
+
             <TouchableOpacity onPress={handleImage} style={styles.changePhoto}>
               <Avatar.Image source={{ uri: avatar ? avatar : null }} size={200}></Avatar.Image>
               <Text style={styles.photoText}>Change Photo</Text>
@@ -109,12 +117,8 @@ const Profile = ({ navigation, route }) => {
 
             <View style={styles.inputs}>
               <TextInput value={name} onChangeText={setName} placeholder='Enter Your Name' style={styles.input} />
-              <Button onPress={submitHandler} style={styles.btn}><Text style={styles.btnText}>update</Text></Button>
+              <Button onPress={submitHandler} style={styles.btn} title='Update'></Button>
             </View>
-
-            <TouchableOpacity onPress={() => navigation.navigate('change/password')} style={styles.changePassBtn}>
-              <Text style={styles.changePassBtnText}>change password</Text>
-            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
@@ -130,14 +134,19 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 
-    gap: 60
+    gap: 20,
+    paddingBottom:50
+  },
+  header:{
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent:'space-between',
+    margin:20
   },
   logoutBtn: {
     backgroundColor: '#D22B2B',
-    padding: 10,
-    borderRadius: 10,
-    alignSelf: 'flex-end',
-    marginRight: 30
+    padding: 8,
+    borderRadius: 5,
   },
   logoutBtnText: {
     color: '#fff',
@@ -189,13 +198,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textTransform: 'capitalize'
   },
-  changePassBtn: {
-    backgroundColor: '#4682B4',
-    padding: 10,
-    borderRadius: 10,
-  },
   changePassBtnText: {
-    color: '#fff',
+    color: 'blue',
     fontWeight: '800',
     fontSize: 16,
     textTransform: 'uppercase'

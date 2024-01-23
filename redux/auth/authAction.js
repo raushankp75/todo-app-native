@@ -46,3 +46,13 @@ export const logout = () => async (dispatch) => {
         dispatch({ type: 'logoutFailure', payload: error.response.data.message })
     }
 }
+
+export const userVerification = (otp) => async (dispatch) => {
+    try {
+        dispatch({ type: 'userVerificationRequest' })
+        const { data } = await axios.post(`${serverUrl}/user/verify`, {otp}, config)
+        dispatch({ type: 'userVerificationSuccess', payload: data.message })
+    } catch (error) {
+        dispatch({ type: 'userVerificationFailure', payload: error.response.data.message })
+    }
+}

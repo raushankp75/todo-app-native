@@ -21,17 +21,17 @@ export const authReducer = createReducer({}, (builder) => {
         builder.addCase('registerRequest', (state) => {
             state.loading = true;
         }),
-            builder.addCase('registerSuccess', (state, action) => {
-                state.loading = false;
-                state.isAuthenticated = true;
-                state.user = action.payload.user;
-                state.message = action.payload.message;
-            }),
-            builder.addCase('registerFailure', (state, action) => {
-                state.loading = false;
-                state.isAuthenticated = false;
-                state.error = action.payload;
-            }),
+        builder.addCase('registerSuccess', (state, action) => {
+            state.loading = false;
+            state.isAuthenticated = true;
+            state.user = action.payload.user;
+            state.message = action.payload.message;
+        }),
+        builder.addCase('registerFailure', (state, action) => {
+            state.loading = false;
+            state.isAuthenticated = false;
+            state.error = action.payload;
+        }),
 
         // Get profile
         builder.addCase('loadUserRequest', (state) => {
@@ -60,6 +60,19 @@ export const authReducer = createReducer({}, (builder) => {
         builder.addCase('logoutFailure', (state, action) => {
             state.loading = false;
             state.isAuthenticated = true;
+            state.error = action.payload;
+        }),
+
+        // User verification
+        builder.addCase('userVerificationRequest', (state) => {
+            state.loading = true;
+        }),
+        builder.addCase('userVerificationSuccess', (state, action) => {
+            state.loading = false;
+            state.message = action.payload
+        }),
+        builder.addCase('userVerificationFailure', (state, action) => {
+            state.loading = false;
             state.error = action.payload;
         }),
 

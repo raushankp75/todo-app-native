@@ -1,6 +1,7 @@
 export {default as Home} from './Home'
 export {default as UpdateTask} from './UpdateTask'
 export {default as Login} from './Login'
+export {default as UserVerification} from './UserVerification'
 export {default as Register} from './Register'
 export {default as MyCamera} from './MyCamera'
 export {default as Profile} from './Profile'
