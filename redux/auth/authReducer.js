@@ -69,7 +69,7 @@ export const authReducer = createReducer({}, (builder) => {
         }),
         builder.addCase('userVerificationSuccess', (state, action) => {
             state.loading = false;
-            state.message = action.payload
+            state.message = action.payload.message
         }),
         builder.addCase('userVerificationFailure', (state, action) => {
             state.loading = false;

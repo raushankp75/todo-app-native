@@ -2,7 +2,7 @@ import { View, Text, SafeAreaView, Platform, StatusBar, StyleSheet, TouchableOpa
 import React, { useEffect, useState } from 'react'
 
 // import components
-import { Task } from '../components'
+import { Task, UserVerify } from '../components'
 
 import Icon from 'react-native-vector-icons/Entypo'
 import { Dialog, } from 'react-native-paper'
@@ -17,6 +17,7 @@ const Home = () => {
     const { tasks } = useSelector(state => state.tasks)
 
     const dispatch = useDispatch()
+    const { user } = useSelector(state => state.auth)
     const { loading, message, error } = useSelector(state => state.taskMessage)
 
     const [openDialog, setOpenDialog] = useState(false)
@@ -60,6 +61,8 @@ const Home = () => {
                     <Text style={styles.heading}>All Task</Text>
 
                     <ScrollView>
+                        {user.verified ? null : (<UserVerify />)}
+
                         {tasks && tasks.map((task) => (
                             <Task key={task._id} taskId={task._id} title={task.title} description={task.description} status={task.completed} createdAt={task.createdAt} />
                         ))}

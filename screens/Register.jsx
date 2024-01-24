@@ -11,19 +11,19 @@ import mime from 'mime'
 
 const Register = ({ navigation, route }) => {
 
-  
+
   const [avatar, setAvatar] = useState("")
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
-  
+
   // redux
   const dispatch = useDispatch()
-  
+
   const handleImage = () => {
     // navigation.navigate('mycamera')
-    navigation.navigate('mycamera', { registerUser: true })
+    navigation.navigate('mycamera', { updateProfile: false })
   }
 
   // get image from params after select image
@@ -39,21 +39,25 @@ const Register = ({ navigation, route }) => {
 
 
 
-  const registerHandler = async () => {
-    if(password !== confirmPassword){
-      Alert.alert('Both password not matched!')
-    }
-    const myForm = new FormData()
-    myForm.append('name', name)
-    myForm.append('email', email)
-    myForm.append('password', password)
-    myForm.append('avatar', {
-      uri: avatar,
-      type: mime.getType(avatar),
-      name: avatar.split("/").pop()
-    })
+  const registerHandler = () => {
 
-    await dispatch(register(myForm))
+    if (!avatar || !name || !email || !password) {
+      Alert.alert('Please fill all the fields. avatar mandatory')
+    } else if (password !== confirmPassword) {
+      Alert.alert('Both password not matched!')
+    } else {
+      const myForm = new FormData()
+      myForm.append('name', name)
+      myForm.append('email', email)
+      myForm.append('password', password)
+      myForm.append('avatar', {
+        uri: avatar,
+        type: mime.getType(avatar),
+        name: avatar.split("/").pop()
+      })
+
+      dispatch(register(myForm))
+    }
   }
 
 
@@ -81,7 +85,7 @@ const Register = ({ navigation, route }) => {
           <TextInput secureTextEntry value={confirmPassword} onChangeText={setConfirmPassword} placeholder='Confirm Password ex: johXX52XX' style={styles.input} />
         </View>
 
-        <Button disabled={!email || !password} onPress={registerHandler} color='green' title='Signup'></Button>
+        <Button disabled={!name || !email || !password || !confirmPassword} onPress={registerHandler} color='green' title='Signup'></Button>
 
 
         <View style={styles.loginBtn}>
@@ -129,8 +133,8 @@ const styles = StyleSheet.create({
   },
   photoText: {
     fontSize: 18,
-    fontWeight:'600',
-    color:'blue'
+    fontWeight: '600',
+    color: 'blue'
   },
   inputs: {
     gap: 10
@@ -154,6 +158,6 @@ const styles = StyleSheet.create({
   loginBtnText: {
     color: '#0047AB',
     fontSize: 18,
-    fontWeight:'600'
+    fontWeight: '600'
   }
 })

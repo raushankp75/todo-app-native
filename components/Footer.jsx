@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         paddingLeft: 30,
         paddingRight: 30,
-        paddingTop: 15,
-        paddingBottom: 15
+        paddingTop: 8,
+        paddingBottom: 8
     }
 })

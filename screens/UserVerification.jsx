@@ -1,7 +1,7 @@
-import { View, Text, StyleSheet, TextInput, Button } from 'react-native'
+import { View, Text, StyleSheet, TextInput, Button, Alert } from 'react-native'
 import React, { useState, useRef, useEffect } from 'react'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { userVerification, loadUser } from '../redux/auth/authAction'
 
 
@@ -13,6 +13,7 @@ const UserVerification = () => {
 
   // redux
   const dispatch = useDispatch()
+  const { loading, message, error } = useSelector(state => state.auth)
 
   const otpVerifyHandler = async () => {
     await dispatch(userVerification(otp))
@@ -26,6 +27,20 @@ const UserVerification = () => {
       inputRef.current?.focus()
     }, 0);
   }, [])
+
+
+  // show message
+  useEffect(() => {
+    if (message) {
+        Alert.alert(message)
+        dispatch({ type: 'clearMessage' })
+    }
+    if (error) {
+        Alert.alert(error)
+        dispatch({ type: 'clearError' })
+    }
+}, [alert, message, error, dispatch])
+
 
 
 

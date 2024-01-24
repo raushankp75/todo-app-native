@@ -18,7 +18,7 @@ export const login = (email, password) => async (dispatch) => {
 export const register = (formData) => async (dispatch) => {
     try {
         dispatch({ type: 'registerRequest' })
-        await axios.post(`${serverUrl}/user/register`, formData, configMultipart)
+        const { data } = await axios.post(`${serverUrl}/user/register`, formData, configMultipart)
         dispatch({ type: 'registerSuccess', payload: data })
     } catch (error) {
         dispatch({ type: 'registerFailure', payload: error.response.data.message })
@@ -51,7 +51,8 @@ export const userVerification = (otp) => async (dispatch) => {
     try {
         dispatch({ type: 'userVerificationRequest' })
         const { data } = await axios.post(`${serverUrl}/user/verify`, {otp}, config)
-        dispatch({ type: 'userVerificationSuccess', payload: data.message })
+        // console.log(data.message)
+        dispatch({ type: 'userVerificationSuccess', payload: data })
     } catch (error) {
         dispatch({ type: 'userVerificationFailure', payload: error.response.data.message })
     }
