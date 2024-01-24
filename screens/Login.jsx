@@ -5,6 +5,8 @@ import Loginbg from '../assets/loginbg.png'
 import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../redux/auth/authAction'
 
+import Icon from 'react-native-vector-icons/MaterialIcons'
+
 
 const Login = ({ navigation }) => {
 
@@ -16,6 +18,8 @@ const Login = ({ navigation }) => {
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+
+  const [isVisible, setIsVisible] = useState(true)
 
   const loginHandler = () => {
     dispatch(login(email, password))
@@ -50,7 +54,12 @@ const Login = ({ navigation }) => {
 
           <View>
             <Text style={styles.inputLabels}>Password</Text>
-            <TextInput secureTextEntry value={password} onChangeText={setPassword} placeholder='ex: must be at least 5 characters' style={styles.input} />
+            <View style={[styles.passwordField, styles.input]}>
+              <TextInput secureTextEntry={isVisible} value={password} onChangeText={setPassword} placeholder='ex: must be at least 5 characters' style={styles.passwordInput} />
+              <TouchableOpacity onPress={() => setIsVisible(!isVisible)} activeOpacity={0.8}>
+              {isVisible ? <Icon name='visibility-off' size={25} style={{color: '#777'}} /> : <Icon name='visibility' size={25} style={{color: '#777'}} />}
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
 
@@ -99,22 +108,31 @@ const styles = StyleSheet.create({
     color: 'gray'
   },
   inputs: {
-    gap:10
+    gap: 10
   },
   input: {
     paddingLeft: 10,
     paddingRight: 10,
     paddingTop: 5,
     paddingBottom: 5,
-    fontSize: 18,
+    fontSize: 17,
     borderColor: '#b5b5b5',
     borderWidth: 2,
-    borderRadius: 3
+    borderRadius: 3, 
+    flex: 1
+  },
+  passwordInput:{
+    fontSize: 17,
   },
   inputLabels: {
     color: '#555',
     fontWeight: '600',
     fontSize: 18
+  },
+  passwordField:{
+    flexDirection:'row',
+    justifyContent:'space-between',
+    alignItems:'center'
   },
   forgotPass: {
     alignSelf: 'flex-end'
@@ -133,6 +151,6 @@ const styles = StyleSheet.create({
   registerBtnText: {
     color: '#0047AB',
     fontSize: 18,
-    fontWeight:'600'
+    fontWeight: '600'
   }
 })

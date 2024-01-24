@@ -6,6 +6,10 @@ import { Avatar } from 'react-native-paper'
 import { useDispatch } from 'react-redux'
 import { register } from '../redux/auth/authAction'
 
+import Icon from 'react-native-vector-icons/MaterialIcons'
+import EditIcon from 'react-native-vector-icons/FontAwesome5'
+
+
 import mime from 'mime'
 
 
@@ -17,6 +21,8 @@ const Register = ({ navigation, route }) => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
+
+  const [isVisible, setIsVisible] = useState(true)
 
   // redux
   const dispatch = useDispatch()
@@ -73,16 +79,28 @@ const Register = ({ navigation, route }) => {
           <Text style={styles.subTitle}>Create an acount so you can explore all the features</Text>
         </View>
 
-        <TouchableOpacity onPress={handleImage} style={styles.changePhoto}>
-          <Avatar.Image source={{ uri: avatar ? avatar : null }} size={100}></Avatar.Image>
-          <Text style={styles.photoText}>Select a Photo</Text>
-        </TouchableOpacity>
+        <View style={styles.changePhoto} >
+          <Avatar.Image source={{ uri: avatar ? avatar : null }} size={120} style={{ elevation: 50 }}></Avatar.Image>
+          <TouchableOpacity onPress={handleImage} style={{ padding: 5 }}>
+            <EditIcon name='user-edit' color='#6082B6' style={styles.photoText} />
+          </TouchableOpacity>
+        </View>
 
         <View style={styles.inputs}>
           <TextInput value={name} onChangeText={setName} placeholder='Full Name ex: John Doe' style={styles.input} />
           <TextInput keyboardType='email-address' value={email} onChangeText={setEmail} placeholder='Email Id ex: johndoe123@gmail.com' style={styles.input} />
-          <TextInput secureTextEntry value={password} onChangeText={setPassword} placeholder='Password ex: johXX52XX' style={styles.input} />
-          <TextInput secureTextEntry value={confirmPassword} onChangeText={setConfirmPassword} placeholder='Confirm Password ex: johXX52XX' style={styles.input} />
+          <View style={[styles.passwordField, styles.input]}>
+            <TextInput secureTextEntry={isVisible} value={password} onChangeText={setPassword} placeholder='password at least 5 characters' style={styles.passwordInput} />
+            <TouchableOpacity onPress={() => setIsVisible(!isVisible)} activeOpacity={0.8}>
+              {isVisible ? <Icon name='visibility-off' size={25} style={{ color: '#777' }} /> : <Icon name='visibility' size={25} style={{ color: '#777' }} />}
+            </TouchableOpacity>
+          </View>
+          <View style={[styles.passwordField, styles.input]}>
+            <TextInput secureTextEntry={isVisible} value={confirmPassword} onChangeText={setConfirmPassword} placeholder='password at least 5 characters' style={styles.passwordInput} />
+            <TouchableOpacity onPress={() => setIsVisible(!isVisible)} activeOpacity={0.8}>
+              {isVisible ? <Icon name='visibility-off' size={25} style={{ color: '#777' }} /> : <Icon name='visibility' size={25} style={{ color: '#777' }} />}
+            </TouchableOpacity>
+          </View>
         </View>
 
         <Button disabled={!name || !email || !password || !confirmPassword} onPress={registerHandler} color='green' title='Signup'></Button>
@@ -129,12 +147,15 @@ const styles = StyleSheet.create({
     color: 'gray'
   },
   changePhoto: {
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative'
   },
   photoText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: 'blue'
+    fontSize: 30,
+    position: 'absolute',
+    bottom:38,
+    left:45
   },
   inputs: {
     gap: 10
@@ -147,7 +168,16 @@ const styles = StyleSheet.create({
     fontSize: 17,
     borderColor: '#b5b5b5',
     borderWidth: 2,
-    borderRadius: 3
+    borderRadius: 3,
+    flex: 1
+  },
+  passwordInput: {
+    fontSize: 17,
+  },
+  passwordField: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   loginBtn: {
     flexDirection: 'row',

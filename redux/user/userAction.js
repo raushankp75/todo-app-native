@@ -2,13 +2,23 @@ import axios from "axios";
 import { serverUrl } from "../serverUrl";
 import { config, configMultipart } from "../config";
 
-export const updateProfile = (formData) => async (dispatch) => {
+export const updateProfile = (name) => async (dispatch) => {
     try {
         dispatch({ type: 'updateProfileRequest' })
-        const { data } = await axios.put(`${serverUrl}/user/update/me`, formData, configMultipart)
+        const { data } = await axios.put(`${serverUrl}/user/update/me`, {name}, config)
         dispatch({ type: 'updateProfileSuccess', payload: data.message })
     } catch (error) {
         dispatch({ type: 'updateProfileFailure', payload: error.response.data.message })
+    }
+}
+
+export const updateAvatar = (formData) => async (dispatch) => {
+    try {
+        dispatch({ type: 'updateAvatarRequest' })
+        const { data } = await axios.put(`${serverUrl}/user/update/avatar`, formData, configMultipart)
+        dispatch({ type: 'updateAvatarSuccess', payload: data.message })
+    } catch (error) {
+        dispatch({ type: 'updateAvatarFailure', payload: error.response.data.message })
     }
 }
 

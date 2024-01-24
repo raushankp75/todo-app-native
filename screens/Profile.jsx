@@ -4,7 +4,9 @@ import { Avatar } from 'react-native-paper'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { loadUser, logout } from '../redux/auth/authAction'
-import { updateProfile } from '../redux/user/userAction'
+import { updateAvatar, updateProfile } from '../redux/user/userAction'
+
+import Icon from 'react-native-vector-icons/FontAwesome5'
 
 import mime from 'mime'
 import { Loader, UserVerify } from '../components'
@@ -19,7 +21,7 @@ const Profile = ({ navigation, route }) => {
 
   const [avatar, setAvatar] = useState(user?.avatar?.url)
   const [name, setName] = useState(user?.name)
-  // const [show, setShow] = useState(false)
+  const [show, setShow] = useState(false)
 
 
   const handleImage = () => {
@@ -33,6 +35,17 @@ const Profile = ({ navigation, route }) => {
     if (route.params) {
       if (route.params.image) {
         setAvatar(route.params.image)
+        if (avatar) {
+          // form data
+          const myForm = new FormData()
+          myForm.append('avatar', {
+            uri: avatar,
+            type: mime.getType(avatar),
+            name: avatar.split("/").pop()
+          })
+
+          dispatch(updateAvatar(myForm))
+        }
       }
     }
   }, [route])
@@ -40,20 +53,9 @@ const Profile = ({ navigation, route }) => {
 
 
   const submitHandler = () => {
-    // console.log(`avatar ${avatar}, name ${name}`)
+    dispatch(updateProfile(name))
 
-    const myForm = new FormData()
-    myForm.append('name', name)
-    myForm.append('avatar', {
-      uri: avatar,
-      type: mime.getType(avatar),
-      name: avatar.split("/").pop()
-    })
-
-    dispatch(updateProfile(myForm))
-
-    // setName("")
-    // setShow(!show)
+    setShow(!show)
   }
 
   const logoutHandler = () => {
@@ -74,54 +76,56 @@ const Profile = ({ navigation, route }) => {
 
 
 
+
   return (
-    loading ?
-      <Loader />
-      :
-      <ScrollView>
-        <View style={styles.container}>
-          <View style={styles.header}>
-            <TouchableOpacity onPress={() => navigation.navigate('change/password')} style={styles.changePassBtn}>
-              <Text style={styles.changePassBtnText}>change password</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={logoutHandler} style={styles.logoutBtn}>
-              <Text style={styles.logoutBtnText}>Logout</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.content}>
-            {user.verified ? null : (<UserVerify />)}
-
-            <TouchableOpacity onPress={handleImage} style={styles.changePhoto}>
-              <Avatar.Image source={{ uri: avatar ? avatar : null }} size={200}></Avatar.Image>
-              <Text style={styles.photoText}>Change Photo</Text>
-            </TouchableOpacity>
-
-            {/* <View style={styles.inputs}>
-            {!show ? (
-              <>
-                <Text style={styles.nameText}>{name}</Text>
-                <TouchableOpacity onPress={() => setShow(!show)}>
-                  <Button style={styles.btn}><Text style={styles.btnText}>edit</Text></Button>
+    <>
+      {
+        loading ?
+          <Loader />
+          :
+          <ScrollView>
+            <View style={styles.container}>
+              <View style={styles.header}>
+                <TouchableOpacity onPress={() => navigation.navigate('change/password')}>
+                  <Text style={styles.changePassBtnText}>change password</Text>
                 </TouchableOpacity>
-              </>
 
-            ) : (
-              <>
-                <TextInput value={name} onChangeText={setName} placeholder='Enter Your Name' style={styles.input} />
-                <Button onPress={submitHandler} style={styles.btn}><Text style={styles.btnText}>update</Text></Button>
-              </>
-            )}
-          </View> */}
+                <TouchableOpacity onPress={logoutHandler} style={styles.logoutBtn}>
+                  <Text style={styles.logoutBtnText}>Logout</Text>
+                </TouchableOpacity>
+              </View>
 
-            <View style={styles.inputs}>
-              <TextInput value={name} onChangeText={setName} placeholder='Enter Your Name' style={styles.input} />
-              <Button onPress={submitHandler} style={styles.btn} title='Update'></Button>
+              <View style={styles.content}>
+                {user.verified ? null : (<UserVerify />)}
+
+                <View style={styles.changePhoto} >
+                  <Avatar.Image source={{ uri: avatar ? avatar : null }} size={240} style={{elevation:50}}></Avatar.Image>
+                  <TouchableOpacity onPress={handleImage} style={{padding:5}}>
+                    <Icon name='user-edit' color='#6082B6' style={styles.photoText} />
+                  </TouchableOpacity>
+                </View>
+
+                <View style={styles.inputs}>
+                  {!show ? (
+                    <>
+                      <Text style={styles.nameText}>{name}</Text>
+                      <TouchableOpacity onPress={() => setShow(!show)} style={styles.editBtn}>
+                        <Text style={styles.btnText}>edit</Text>
+                      </TouchableOpacity>
+                    </>
+
+                  ) : (
+                    <>
+                      <TextInput multiline value={name} onChangeText={setName} placeholder='Enter Your Name' style={styles.input} />
+                      <Button onPress={submitHandler} style={styles.btn} title='Update'></Button>
+                    </>
+                  )}
+                </View>
+              </View>
             </View>
-          </View>
-        </View>
-      </ScrollView>
+          </ScrollView>
+      }
+    </>
   )
 }
 
@@ -131,66 +135,78 @@ export default Profile
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-
-    gap: 20,
-    paddingBottom:50
+    flex: 1,
+    gap: 30,
+    padding: 20
+    // paddingBottom: 50
   },
-  header:{
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent:'space-between',
-    margin:20
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginVertical: 20
   },
   logoutBtn: {
-    backgroundColor: '#D22B2B',
-    padding: 8,
+    backgroundColor: '#CC5500',
+    paddingVertical:5,
+    paddingHorizontal:12,
     borderRadius: 5,
   },
   logoutBtnText: {
     color: '#fff',
-    fontWeight: '800',
+    fontWeight: '600',
     fontSize: 16
   },
   content: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 20
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    gap: 40
   },
 
   changePhoto: {
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative'
   },
   photoText: {
-    fontSize: 25
+    fontSize: 35,
+    position: 'absolute',
+    bottom:43,
+    left:73
   },
   inputs: {
-    width: '90%',
+    width: '100%',
     // gap: 20,
-    // flexDirection: 'row',
+    flexDirection: 'row',
     alignItems: 'center',
-    // justifyContent: 'space-evenly',
-    gap: 10,
+    justifyContent: 'space-between',
+    // gap: 10,
     // margin: 10
   },
   nameText: {
-    fontSize: 22
+    fontSize: 22,
+    width: '80%',
+    flexWrap: 'wrap'
   },
   input: {
-    width: '70%',
+    // width: '70%',
     // backgroundColor: '#fff',
-    borderBottomWidth: 1,
+    borderWidth: 1,
     borderColor: '#b5b5b5',
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingTop: 5,
-    paddingBottom: 5,
-    borderRadius: 5,
-    fontSize: 16
+    paddingVertical: 3,
+    paddingHorizontal: 8,
+    borderRadius: 3,
+    fontSize: 16,
+    marginRight: 5,
+    maxHeight: 50,
+    flex: 1
   },
-  btn: {
-    backgroundColor: '#4682B4',
+  editBtn: {
+    backgroundColor: '#50C878',
+    paddingVertical: 4,
+    paddingHorizontal: 12,
+    borderRadius: 5
   },
   btnText: {
     color: '#fff',

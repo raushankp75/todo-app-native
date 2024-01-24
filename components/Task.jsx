@@ -49,7 +49,7 @@ const Task = ({ taskId, title, description, status, createdAt }) => {
     return (
         <View style={styles.main}>
             <View style={styles.leftView}>
-                <Checkbox onPress={handleCheckbox} status={completed ? 'checked' : 'unchecked'} color='#474747' />
+                <Checkbox onPress={handleCheckbox} status={completed ? 'checked' : 'unchecked'} color='#00A36C' />
 
                 <TouchableOpacity onPress={() => handleTaskUpdateButton(taskId)} style={styles.taskDetails}>
                     <Text style={styles.title}>{title}</Text>
@@ -74,13 +74,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         // justifyContent: 'space-evenly',
         justifyContent: 'space-between',
-        paddingLeft: 5,
-        paddingRight: 10,
+        paddingLeft: 1,
+        paddingRight: 8,
         paddingTop: 2,
         paddingBottom: 2,
-        margin: 7,
+        marginVertical: 7,
+        marginHorizontal: 10,
         elevation: 10,
         borderRadius: 20,
+        borderWidth:2,
+        borderColor:'#6F8FAF'
     },
     leftView: {
         flexDirection: 'row',

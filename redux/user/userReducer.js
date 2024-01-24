@@ -14,6 +14,19 @@ export const userMessageReducer = createReducer({}, (builder) => {
         state.error = action.payload;
     }),
 
+    // Update avatar
+    builder.addCase('updateAvatarRequest', (state) => {
+        state.loading = true;
+    }),
+    builder.addCase('updateAvatarSuccess', (state, action) => {
+        state.loading = false;
+        state.message = action.payload
+    }),
+    builder.addCase('updateAvatarFailure', (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+    }),
+
     // Update password
     builder.addCase('updatePasswordRequest', (state) => {
         state.loading = true;

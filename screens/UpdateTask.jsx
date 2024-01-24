@@ -70,7 +70,7 @@ const UpdateTask = ({ route, navigation }) => {
             <SafeAreaView>
                 <View style={styles.heading}>
                     <Text style={styles.headingTitle}>Update Your Task</Text>
-                    <Icon onPress={handleDelete} name='delete' color='#D22B2B' size={25} />
+                    <Icon onPress={handleDelete} name='delete' color='#CC5500' size={25} />
                 </View>
 
                 {/* <Text style={styles.content}> */}

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 // import components
 import { Task, UserVerify } from '../components'
 
-import Icon from 'react-native-vector-icons/Entypo'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 import { Dialog, } from 'react-native-paper'
 import { useDispatch, useSelector } from 'react-redux'
 import { addTask, getAllTasks } from '../redux/task/taskAction'
@@ -69,7 +69,7 @@ const Home = () => {
                     </ScrollView>
                 </SafeAreaView>
                 <TouchableOpacity onPress={toggleDialog} style={styles.addIcon}>
-                    <Icon name='add-to-list' size={32} color='#4682B4' />
+                    <Icon name='add-task' size={40} color='#4682B4' />
                 </TouchableOpacity>
             </View>
 
@@ -86,7 +86,7 @@ const Home = () => {
                         </TouchableOpacity>
 
                         <TouchableOpacity disabled={!title || !description || loading} onPress={addTaskHandler} style={styles.dialogAddIcon}>
-                            <Icon name='check' size={32} color='#4682B4' />
+                            <Icon name='check' size={40} color='#4682B4' />
                         </TouchableOpacity>
                     </View>
                 </Dialog.Content>
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#4682B4',
         flex: 1,
         paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-        paddingBottom: 60
+        paddingBottom: 60,
     },
     heading: {
         backgroundColor: "#0047AB",
@@ -118,14 +118,12 @@ const styles = StyleSheet.create({
     addIcon: {
         backgroundColor: '#fff',
         elevation: 20,
-        width: '150',
-        height: '150',
         justifyContent: 'center',
         alignContent: 'center',
         borderRadius: 100,
         alignSelf: 'flex-end',
-        padding: 15,
-        marginRight: 15,
+        padding: 10,
+        marginRight: 10,
 
         position: 'absolute',
         bottom: 30,
@@ -148,13 +146,11 @@ const styles = StyleSheet.create({
     },
     dialogAddIcon: {
         backgroundColor: '#fff',
-        elevation: 1,
-        width: '150',
-        height: '150',
+        elevation: 10,
         justifyContent: 'center',
         alignContent: 'center',
         borderRadius: 100,
-        padding: 15,
+        padding: 10,
     },
     dialogCancelIcon: {
         fontSize: 15,
